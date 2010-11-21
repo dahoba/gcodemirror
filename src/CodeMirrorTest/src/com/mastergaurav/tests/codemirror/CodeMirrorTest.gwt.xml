@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='codemirrortest'>
+	<inherits name='com.google.gwt.user.User' />
+
+	<inherits name='com.mastergaurav.codemirror.CodeMirror' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+
+	<entry-point class='com.mastergaurav.tests.codemirror.client.CodeMirrorTest' />
+</module>
