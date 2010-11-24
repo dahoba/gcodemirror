@@ -2,10 +2,12 @@ package com.mastergaurav.codemirror.client;
 
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.TextAreaElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.TextArea;
 
 
@@ -18,14 +20,38 @@ public class CodeMirror
 	{
 	}
 
+	public CodeMirror(Element place, CodeMirrorConfig config)
+	{
+		codeMirrorImpl = invokeCtorImpl(place, config.asJSOject());
+	}
+
 	public CodeMirror(Element place, Map<String, Object> options)
 	{
 		codeMirrorImpl = invokeCtorImpl(place, JSOUtils.fromMap(options));
 	}
 
+	public static CodeMirror forJava(TextAreaElement e)
+	{
+		CodeMirrorConfig config = new CodeMirrorConfig();
+		config.setParserFile("contrib/java/js/tokenizejava.js", "contrib/java/js/parsejava.js");
+		config.setHeight(480, Unit.PX);
+		config.setStylesheet(GWT.getModuleBaseURL() + "css/javacolors.css");
+		config.setTabmode(TabMode.SHIFT);
+
+		return fromTextArea(e, config);
+	}
+	
 	public static boolean isProbablySupported()
 	{
 		return isProbablySupportedImpl();
+	}
+
+	public static CodeMirror replace(String id, CodeMirrorConfig config)
+	{
+		Element e = Document.get().getElementById(id);
+		CodeMirror rv = new CodeMirror();
+		rv.codeMirrorImpl = replaceImpl(e, config.asJSOject());
+		return rv;
 	}
 
 	public static CodeMirror replace(String id, Map<String, Object> options)
@@ -33,6 +59,13 @@ public class CodeMirror
 		Element e = Document.get().getElementById(id);
 		CodeMirror rv = new CodeMirror();
 		rv.codeMirrorImpl = replaceImpl(e, JSOUtils.fromMap(options));
+		return rv;
+	}
+
+	public static CodeMirror replace(Element e, CodeMirrorConfig config)
+	{
+		CodeMirror rv = new CodeMirror();
+		rv.codeMirrorImpl = replaceImpl(e, config.asJSOject());
 		return rv;
 	}
 
@@ -46,6 +79,16 @@ public class CodeMirror
 	private static native JavaScriptObject replaceImpl(Element e, JavaScriptObject obj) /*-{
 		return $wnd.CodeMirror.replace(e, obj);
 	}-*/;
+
+	public static CodeMirror fromTextArea(String id, CodeMirrorConfig config)
+	{
+		return fromTextAreaImpl(TextAreaElement.as(Document.get().getElementById(id)), config.asJSOject());
+	}
+
+	public static CodeMirror fromTextArea(TextAreaElement e, CodeMirrorConfig config)
+	{
+		return fromTextAreaImpl(e, config.asJSOject());
+	}
 
 	public static CodeMirror fromTextArea(String id, JavaScriptObject options)
 	{

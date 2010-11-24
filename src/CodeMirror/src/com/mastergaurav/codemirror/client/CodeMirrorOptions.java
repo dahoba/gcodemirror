@@ -4,7 +4,7 @@ public interface CodeMirrorOptions
 {
 	public static final String PARSER_FILE = "parserfile";
 	public static final String PATH = "path";
-	public static final String STYLSHEET = "stylesheet";
+	public static final String STYLESHEET = "stylesheet";
 	public static final String CONTENT = "content";
 	public static final String BASE_FILES = "basefiles";
 	public static final String IFRAME_CLASS = "iframeClass";
@@ -28,4 +28,6 @@ public interface CodeMirrorOptions
 	public static final String LINE_NUMBER_DELAY = "lineNumberDelay";
 	public static final String LINE_NUMBER_TIME = "lineNumberTime";
 	public static final String ON_LINE_NUMBER_CLICK = "lineNumberClick";
+	
+	public static final String TAB_MODE = "tabmode";
 }

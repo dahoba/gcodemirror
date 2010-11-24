@@ -19,6 +19,7 @@ public class JSOUtils
 		return fn;
 	}-*/;
 
+	@SuppressWarnings("unchecked")
 	public static JavaScriptObject fromMap(Map<String, Object> input)
 	{
 		JavaScriptObject obj = JavaScriptObject.createObject();
@@ -38,12 +39,19 @@ public class JSOUtils
 			} else if(v instanceof Double)
 			{
 				setValue(obj, k, (Double) v);
+			} else if(v instanceof Float)
+			{
+				setValue(obj, k, (Float) v);
 			} else if(v instanceof String)
 			{
 				setValue(obj, k, (String) v);
 			} else if(v instanceof JavaScriptObjectWrapper)
 			{
 				setValue(obj, k, ((JavaScriptObjectWrapper) v).getValue());
+			} else if(v instanceof Enum)
+			{
+				Enum e = (Enum) v;
+				setValue(obj, k, e.toString());
 			}
 		}
 
@@ -67,6 +75,10 @@ public class JSOUtils
 	}-*/;
 
 	public static native void setValue(JavaScriptObject object, String name, double value) /*-{
+		object[name] = value;
+	}-*/;
+
+	public static native void setValue(JavaScriptObject object, String name, float value) /*-{
 		object[name] = value;
 	}-*/;
 
