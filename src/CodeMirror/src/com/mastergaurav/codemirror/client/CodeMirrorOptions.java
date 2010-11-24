@@ -28,6 +28,8 @@ public interface CodeMirrorOptions
 	public static final String LINE_NUMBER_DELAY = "lineNumberDelay";
 	public static final String LINE_NUMBER_TIME = "lineNumberTime";
 	public static final String ON_LINE_NUMBER_CLICK = "lineNumberClick";
-	
+
 	public static final String TAB_MODE = "tabmode";
+	public static final String VAL = "_val";
+	public static final String UNIT = "_unit";
 }

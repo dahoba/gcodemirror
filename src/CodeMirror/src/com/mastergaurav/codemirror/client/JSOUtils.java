@@ -12,7 +12,6 @@ public class JSOUtils
 
 	public static native JavaScriptObject createFunction(IFunction executor) /*-{
 		var fn = function() {
-			alert('Will execute 2');
 			executor.@com.mastergaurav.codemirror.client.IFunction::execute(Lcom/google/gwt/core/client/JsArrayMixed;)(arguments);
 		}
 
@@ -24,7 +23,7 @@ public class JSOUtils
 	{
 		JavaScriptObject obj = JavaScriptObject.createObject();
 
-		for(String k: input.keySet())
+		for(String k : input.keySet())
 		{
 			Object v = input.get(k);
 			if(v == null)
@@ -33,6 +32,9 @@ public class JSOUtils
 			} else if(v instanceof Integer)
 			{
 				setValue(obj, k, (Integer) v);
+			} else if(v instanceof Boolean)
+			{
+				setValue(obj, k, (Boolean) v);
 			} else if(v instanceof Short)
 			{
 				setValue(obj, k, (Short) v);
@@ -62,6 +64,10 @@ public class JSOUtils
 		object[name] = null;
 	}-*/;
 
+	public static native void setValue(JavaScriptObject object, String name, boolean value) /*-{
+		object[name] = value;
+	}-*/;
+
 	public static native void setValue(JavaScriptObject object, String name, String value) /*-{
 		object[name] = value;
 	}-*/;
@@ -84,5 +90,32 @@ public class JSOUtils
 
 	public static native void setValue(JavaScriptObject object, String name, JavaScriptObject value) /*-{
 		object[name] = value;
+	}-*/;
+
+	public static native <T extends JavaScriptObject> T getJSO(JavaScriptObject object, String name) /*-{
+		var rv = object[name];
+		if(typeof rv == 'undefined')
+		{
+			rv = null;
+		}
+		return rv;
+	}-*/;
+
+	public static native int getInt(JavaScriptObject object, String name) /*-{
+		return Number(object[name]) || 0;
+	}-*/;
+
+	public static native String getString(JavaScriptObject object, String name) /*-{
+		return String(object[name] || '');
+	}-*/;
+
+	public static native String invokeAndGetString(JavaScriptObject object, String fnName) /*-{
+		var fn = object[fnName];
+		if(typeof fn == 'function')
+		{
+			var msg = fn.apply(object);
+			return msg;
+		}
+		return "";
 	}-*/;
 }

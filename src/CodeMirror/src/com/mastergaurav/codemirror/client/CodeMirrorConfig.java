@@ -111,11 +111,55 @@ public class CodeMirrorConfig implements CodeMirrorOptions
 	public void setHeight(int height, Unit unit)
 	{
 		set(HEIGHT, height + unit.getType());
+		set(HEIGHT + VAL, height);
+		set(HEIGHT + UNIT, unit.getType());
 	}
 
 	public String getHeight()
 	{
 		return (String) get(HEIGHT);
+	}
+
+	public String getHeightType()
+	{
+		return (String) get(HEIGHT + UNIT);
+	}
+
+	public int getHeightValue()
+	{
+		Integer i = (Integer) get(HEIGHT + VAL);
+		if(i == null)
+		{
+			return -1;
+		}
+		return i;
+	}
+
+	public void setWidth(int width, Unit unit)
+	{
+		set(WIDTH, width + unit.getType());
+		set(WIDTH + VAL, width);
+		set(WIDTH + UNIT, unit.getType());
+	}
+
+	public String getWidth()
+	{
+		return (String) get(WIDTH);
+	}
+
+	public String getWidthType()
+	{
+		return (String) get(WIDTH + UNIT);
+	}
+
+	public int getWidthValue()
+	{
+		Integer i = (Integer) get(WIDTH + VAL);
+		if(i == null)
+		{
+			return -1;
+		}
+		return i;
 	}
 
 	public void setTabmode(TabMode mode)
@@ -127,7 +171,17 @@ public class CodeMirrorConfig implements CodeMirrorOptions
 	{
 		return (TabMode) get(TAB_MODE);
 	}
-	
+
+	public void setShowLineNumbers(boolean show)
+	{
+		set(LINE_NUMBERS, show);
+	}
+
+	public boolean getShowLineNumbers()
+	{
+		return (Boolean) get(LINE_NUMBERS);
+	}
+
 	public Object get(String key)
 	{
 		return options.get(key);
