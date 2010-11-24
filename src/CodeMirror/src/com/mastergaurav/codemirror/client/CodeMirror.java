@@ -198,11 +198,14 @@ public class CodeMirror
 	{
 		replaceSelectionImpl(codeMirrorImpl, text);
 	}
-	
+
 	public void reindent()
 	{
 		reindentImpl(codeMirrorImpl);
 	}
+
+	// TODO: undo, redo, getHistorySize, clearHistory
+	// TODO: Create "SearchCursor" getSearchCursor
 
 	private native void reindentImpl(JavaScriptObject cm) /*-{
 		cm.reindent();
