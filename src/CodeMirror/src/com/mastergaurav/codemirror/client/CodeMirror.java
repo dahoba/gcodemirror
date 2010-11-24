@@ -4,105 +4,110 @@ import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.TextAreaElement;
 import com.google.gwt.user.client.ui.TextArea;
 
 
 public class CodeMirror
 {
-	public static void fromTextArea(String id, JavaScriptObject options)
+	@SuppressWarnings("unused")
+	private JavaScriptObject codeMirrorImpl;
+
+	private CodeMirror()
 	{
-		fromTextAreaImpl(TextAreaElement.as(Document.get().getElementById(id)), options);
 	}
 
-	public static void fromTextArea(TextArea ta, JavaScriptObject options)
+	public CodeMirror(Element place, Map<String, Object> options)
 	{
-		fromTextAreaImpl(ta.getElement().<TextAreaElement>cast(), options);
+		codeMirrorImpl = invokeCtorImpl(place, JSOUtils.fromMap(options));
+	}
+
+	public static boolean isProbablySupported()
+	{
+		return isProbablySupportedImpl();
+	}
+
+	public static CodeMirror replace(String id, Map<String, Object> options)
+	{
+		Element e = Document.get().getElementById(id);
+		CodeMirror rv = new CodeMirror();
+		rv.codeMirrorImpl = replaceImpl(e, JSOUtils.fromMap(options));
+		return rv;
+	}
+
+	public static CodeMirror replace(Element e, Map<String, Object> options)
+	{
+		CodeMirror rv = new CodeMirror();
+		rv.codeMirrorImpl = replaceImpl(e, JSOUtils.fromMap(options));
+		return rv;
+	}
+
+	private static native JavaScriptObject replaceImpl(Element e, JavaScriptObject obj) /*-{
+		return $wnd.CodeMirror.replace(e, obj);
+	}-*/;
+
+	public static CodeMirror fromTextArea(String id, JavaScriptObject options)
+	{
+		return fromTextAreaImpl(TextAreaElement.as(Document.get().getElementById(id)), options);
+	}
+
+	public static CodeMirror fromTextArea(TextArea ta, JavaScriptObject options)
+	{
+		return fromTextAreaImpl(ta.getElement().<TextAreaElement>cast(), options);
 	}
 	
-	public static void fromTextArea(TextAreaElement tea, JavaScriptObject options)
+	public static CodeMirror fromTextArea(TextAreaElement tea, JavaScriptObject options)
 	{
-		fromTextAreaImpl(tea, options);
+		return fromTextAreaImpl(tea, options);
 	}
 
-	public static void fromTextArea(String id, Map<String, Object> options)
+	public static CodeMirror fromTextArea(String id, Map<String, Object> options)
 	{
-		fromTextAreaImpl(TextAreaElement.as(Document.get().getElementById(id)), options);
+		return fromTextAreaImpl(TextAreaElement.as(Document.get().getElementById(id)), options);
 	}
 
-	public static void fromTextArea(TextArea ta, Map<String, Object> options)
+	public static CodeMirror fromTextArea(TextArea ta, Map<String, Object> options)
 	{
-		fromTextAreaImpl(ta.getElement().<TextAreaElement>cast(), options);
+		return fromTextAreaImpl(ta.getElement().<TextAreaElement>cast(), options);
 	}
 	
-	public static void fromTextArea(TextAreaElement tea, Map<String, Object> options)
+	public static CodeMirror fromTextArea(TextAreaElement tea, Map<String, Object> options)
 	{
-		fromTextAreaImpl(tea, options);
+		return fromTextAreaImpl(tea, options);
 	}
 
-	private static void fromTextAreaImpl(TextAreaElement tea, Map<String, Object> options)
+	private static CodeMirror fromTextAreaImpl(TextAreaElement tea, Map<String, Object> options)
 	{
-		fromTextAreaImpl(tea, fromMap(options));
+		return fromTextAreaImpl(tea, JSOUtils.fromMap(options));
 	}
 
-	private static JavaScriptObject fromMap(Map<String, Object> input)
+	private static CodeMirror fromTextAreaImpl(TextAreaElement tea, JavaScriptObject options)
 	{
-		JavaScriptObject obj = JavaScriptObject.createObject();
-		
-		for(String k: input.keySet())
-		{
-			Object v = input.get(k);
-			if(v == null)
-			{
-				setValueNull(obj, k);
-			} else if(v instanceof Integer)
-			{
-				setValue(obj, k, (Integer) v);
-			} else if(v instanceof Short)
-			{
-				setValue(obj, k, (Short) v);
-			} else if(v instanceof Double)
-			{
-				setValue(obj, k, (Double) v);
-			} else if(v instanceof String)
-			{
-				setValue(obj, k, (String) v);
-			} else if(v instanceof JavaScriptObjectWrapper)
-			{
-				setValue(obj, k, ((JavaScriptObjectWrapper) v).getValue());
-			}
-		}
-
-		return obj;
+		CodeMirror rv = new CodeMirror();
+		rv.codeMirrorImpl = doTextAreaImpl(tea, options);
+		return rv;
 	}
 
-	private static native void setValueNull(JavaScriptObject object, String name) /*-{
-		object[name] = null;
+	private static native JavaScriptObject invokeCtorImpl(Element place, JavaScriptObject options) /*-{
+		return new $wnd.CodeMirror(place, options);
 	}-*/;
-
-	private static native void setValue(JavaScriptObject object, String name, String value) /*-{
-		object[name] = value;
-	}-*/;
-
-	private static native void setValue(JavaScriptObject object, String name, int value) /*-{
-		object[name] = value;
-	}-*/;
-
-	private static native void setValue(JavaScriptObject object, String name, short value) /*-{
-		object[name] = value;
-	}-*/;
-
-	private static native void setValue(JavaScriptObject object, String name, double value) /*-{
-		object[name] = value;
-	}-*/;
-
-	private static native void setValue(JavaScriptObject object, String name, JavaScriptObject value) /*-{
-		object[name] = value;
-	}-*/;
-
-	private static native void fromTextAreaImpl(TextAreaElement tea, JavaScriptObject options) /*-{
+	
+	private static native JavaScriptObject doTextAreaImpl(TextAreaElement tea, JavaScriptObject options) /*-{
 		//alert('$wnd.CodeMirror.fromTextArea: ' + ($wnd.CodeMirror.fromTextArea));
-		$wnd.CodeMirror.fromTextArea(tea, options);
+		return $wnd.CodeMirror.fromTextArea(tea, options);
+	}-*/;
+	
+	private static native boolean isProbablySupportedImpl() /*-{
+		var rv = $wnd.CoreMirror.isProbablySupported();
+		return !!rv;
 	}-*/;
 }
+
+
+
+
+
+
+
 

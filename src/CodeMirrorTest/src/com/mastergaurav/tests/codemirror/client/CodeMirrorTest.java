@@ -22,11 +22,12 @@ public class CodeMirrorTest implements EntryPoint
 		jas.push("contrib/java/js/parsejava.js");
 		JavaScriptObjectWrapper parserfile = new JavaScriptObjectWrapper(jas);
 		options.put("parserfile", parserfile);
-		
-		options.put("height", "650px");
+
+		options.put("height", "480px");
 		options.put("stylesheet", GWT.getModuleBaseURL() + "css/javacolors.css");
 		options.put("tabMode", "shift");
 
-		CodeMirror.fromTextArea("code", options);
+		@SuppressWarnings("unused")
+		CodeMirror cm = CodeMirror.fromTextArea("code", options);
 	}
 }
