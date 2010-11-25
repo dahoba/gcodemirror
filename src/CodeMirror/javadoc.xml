@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="protected" additionalparam=" -bottom '&lt;a href=&quot;http://www.mastergaurav.com&quot;&gt;Gaurav&amp;apos;s Home&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;http://www.edujini.com&quot;&gt;Gaurav&amp;apos;s Company&lt;/a&gt;'&#13;&#10;" author="true" classpath="test-classes;D:\Program Files (x86)\Development\Eclipse\3.5\plugins\com.google.gwt.eclipse.sdkbundle.2.1.0_2.1.0.v201010280047\gwt-2.1.0\gwt-dev.jar;D:\Program Files (x86)\Development\Eclipse\3.5\plugins\com.google.gwt.eclipse.sdkbundle.2.1.0_2.1.0.v201010280047\gwt-2.1.0\gwt-user.jar" destdir="docs/javadoc" doctitle="gCodeMirror (by Gaurav Vaish)" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" sourcefiles="src/com/mastergaurav/codemirror/client/JSOUtils.java,src/com/mastergaurav/codemirror/client/CodeMirrorOptions.java,src/com/mastergaurav/codemirror/client/CodeMirrorConfig.java,src/com/mastergaurav/codemirror/client/JavaScriptObjectWrapper.java,src/com/mastergaurav/codemirror/client/IFunction.java,src/com/mastergaurav/codemirror/client/CodeMirror.java,src/com/mastergaurav/codemirror/client/TabMode.java" sourcepath="test;src" splitindex="true" use="true" version="true">
+            <link href="http://google-web-toolkit.googlecode.com/svn/javadoc/2.1/"/>
+            <link href="http://java.sun.com/javase/6/docs/api/"/>
+        </javadoc>
+    </target>
+</project>

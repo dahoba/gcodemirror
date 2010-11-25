@@ -9,6 +9,16 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.TextArea;
 
+/**
+ * Online editor for your code.
+ * 
+ * <p>
+ * This code would serve as the starting point to transform any
+ * <code>textarea</code> element to a rich editor for your code.
+ * </p>
+ * 
+ * @author Gaurav Vaish
+ */
 public class CodeMirror
 {
 	@SuppressWarnings("unused")
@@ -29,6 +39,12 @@ public class CodeMirror
 		initialize(options);
 	}
 
+	/**
+	 * Easy method for rendering Java code.
+	 * 
+	 * @param e {@linkplain TextAreaElement} element to be tranformed.
+	 * @return A {@linkplain CodeMirror} instance
+	 */
 	public static CodeMirror forJava(TextAreaElement e)
 	{
 		CodeMirrorConfig config = new CodeMirrorConfig();
