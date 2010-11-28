@@ -42,7 +42,8 @@ public class CodeMirror
 	/**
 	 * Easy method for rendering Java code.
 	 * 
-	 * @param e {@linkplain TextAreaElement} element to be tranformed.
+	 * @param e
+	 *            {@linkplain TextAreaElement} element to be tranformed.
 	 * @return A {@linkplain CodeMirror} instance
 	 */
 	public static CodeMirror forJava(TextAreaElement e)
@@ -220,8 +221,84 @@ public class CodeMirror
 		reindentImpl(codeMirrorImpl);
 	}
 
-	// TODO: undo, redo, getHistorySize, clearHistory
 	// TODO: Create "SearchCursor" getSearchCursor
+
+	public void undo()
+	{
+		undoImpl(codeMirrorImpl);
+	}
+
+	public void redo()
+	{
+		redoImpl(codeMirrorImpl);
+	}
+
+	public void clearHistory()
+	{
+		clearHistoryImpl(codeMirrorImpl);
+	}
+
+	public int getHistorySize()
+	{
+		return getHistorySizeImpl(codeMirrorImpl);
+	}
+
+	public Editor getEditor()
+	{
+		JavaScriptObject editor = editorImpl(codeMirrorImpl);
+		return new Editor(editor);
+	}
+	
+	private native JavaScriptObject editorImpl(JavaScriptObject cm) /*-{
+		var rv = cm.editor;
+		return rv;
+	}-*/;
+
+	public SearchCursor getSearchCursor(String search)
+	{
+		JavaScriptObject obj = getSearchCursorImpl(codeMirrorImpl, search);
+		return new SearchCursor(obj);
+	}
+
+	public SearchCursor getSearchCursor(String search, boolean currentPos)
+	{
+		JavaScriptObject obj = getSearchCursorImpl(codeMirrorImpl, search, currentPos);
+		return new SearchCursor(obj);
+	}
+
+	public SearchCursor getSearchCursor(String search, boolean currentPos, boolean caseSensitive)
+	{
+		JavaScriptObject obj = getSearchCursorImpl(codeMirrorImpl, search, currentPos, caseSensitive);
+		return new SearchCursor(obj);
+	}
+
+	private native JavaScriptObject getSearchCursorImpl(JavaScriptObject cm, String search, boolean currentPos, boolean caseSensitive) /*-{
+		return cm.getSearchCursor(search, currentPos, caseSensitive);
+	}-*/;
+
+	private native JavaScriptObject getSearchCursorImpl(JavaScriptObject cm, String search, boolean currentPos) /*-{
+		return cm.getSearchCursor(search, currentPos);
+	}-*/;
+
+	private native JavaScriptObject getSearchCursorImpl(JavaScriptObject cm, String search) /*-{
+		return cm.getSearchCursor(search);
+	}-*/;
+
+	private native int getHistorySizeImpl(JavaScriptObject cm) /*-{
+		return cm.historySize();
+	}-*/;
+
+	private native void clearHistoryImpl(JavaScriptObject cm) /*-{
+		cm.clearHistory();
+	}-*/;
+
+	private native void redoImpl(JavaScriptObject cm) /*-{
+		cm.redo();
+	}-*/;
+
+	private native void undoImpl(JavaScriptObject cm) /*-{
+		cm.undo();
+	}-*/;
 
 	private native void reindentImpl(JavaScriptObject cm) /*-{
 		cm.reindent();
