@@ -221,7 +221,10 @@ public class CodeMirror
 		reindentImpl(codeMirrorImpl);
 	}
 
-	// TODO: Create "SearchCursor" getSearchCursor
+	public void reindentSelection()
+	{
+		reindentSelectionImpl(codeMirrorImpl);
+	}
 
 	public void undo()
 	{
@@ -248,7 +251,51 @@ public class CodeMirror
 		JavaScriptObject editor = editorImpl(codeMirrorImpl);
 		return new Editor(editor);
 	}
-	
+
+	public void focus()
+	{
+		focusImpl(codeMirrorImpl);
+	}
+
+	public void focusIfIE()
+	{
+		focusIfIEImpl(codeMirrorImpl);
+	}
+
+	public void grabKeys(IKeyHandler handler, IKeyFilter filter)
+	{
+		grabKeysImpl(codeMirrorImpl, handler, filter);
+	}
+
+	public void ungrabKeys()
+	{
+		ungrabKeysImpl(codeMirrorImpl);
+	}
+
+	private native void ungrabKeysImpl(JavaScriptObject cm) /*-{
+		cm.ungrabKeys();
+	}-*/;
+
+	private native void grabKeysImpl(JavaScriptObject cm, IKeyHandler handler, IKeyFilter filter) /*-{
+		function handlerFn(event) {
+			handler.@com.mastergaurav.codemirror.client.IKeyHandler::onKeyEvent(Lcom/google/gwt/dom/client/NativeEvent;)(null);
+		};
+
+		function filterFn(c, e) {
+			return filter.@com.mastergaurav.codemirror.client.IKeyFilter::filter(ILcom/google/gwt/dom/client/NativeEvent;)(c, e);
+		};
+
+		cm.grabKeys(handlerFn, filterFn);
+	}-*/;
+
+	private native void focusIfIEImpl(JavaScriptObject cm) /*-{
+		cm.focusIfIE();
+	}-*/;
+
+	private native void focusImpl(JavaScriptObject cm) /*-{
+		cm.focus();
+	}-*/;
+
 	private native JavaScriptObject editorImpl(JavaScriptObject cm) /*-{
 		var rv = cm.editor;
 		return rv;
@@ -272,7 +319,8 @@ public class CodeMirror
 		return new SearchCursor(obj);
 	}
 
-	private native JavaScriptObject getSearchCursorImpl(JavaScriptObject cm, String search, boolean currentPos, boolean caseSensitive) /*-{
+	private native JavaScriptObject getSearchCursorImpl(JavaScriptObject cm, String search, boolean currentPos,
+			boolean caseSensitive) /*-{
 		return cm.getSearchCursor(search, currentPos, caseSensitive);
 	}-*/;
 
@@ -298,6 +346,10 @@ public class CodeMirror
 
 	private native void undoImpl(JavaScriptObject cm) /*-{
 		cm.undo();
+	}-*/;
+
+	private native void reindentSelectionImpl(JavaScriptObject cm) /*-{
+		cm.reindent();
 	}-*/;
 
 	private native void reindentImpl(JavaScriptObject cm) /*-{
