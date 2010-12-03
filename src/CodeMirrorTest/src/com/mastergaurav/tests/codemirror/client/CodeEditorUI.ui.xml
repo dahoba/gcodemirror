@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ce="urn:import:com.mastergaurav.codemirror.client">
+	
+	<ui:with type="com.mastergaurav.codemirror.client.CodeMirrorConfig" field="config"></ui:with>
+	
+	<ui:style>
+		
+	</ui:style>
+	
+	<HTMLPanel width="800px" height="640px">
+		<ce:CodeEditor ui:field="ce" config="{config}" />
+	</HTMLPanel>
+</ui:UiBinder> 
