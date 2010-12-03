@@ -2,6 +2,7 @@ package com.mastergaurav.codemirror.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayMixed;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.TextAreaElement;
@@ -25,7 +26,33 @@ public class CodeMirror
 	private CodeMirrorConfig config;
 	private JavaScriptObject codeMirrorImpl;
 	private Element wrapping;
+	private ICallback changeCallback;
+	private ICallback saveCallback;
 
+	private IFunction changeFn = new IFunction()
+	{
+		@Override
+		public void execute(JsArrayMixed args)
+		{
+			if(changeCallback != null)
+			{
+				changeCallback.execute();
+			}
+		}
+	};
+
+	private IFunction saveFn = new IFunction()
+	{
+		@Override
+		public void execute(JsArrayMixed args)
+		{
+			if(saveCallback != null)
+			{
+				saveCallback.execute();
+			}
+		}
+	};
+	
 	private CodeMirror()
 	{
 		config = new CodeMirrorConfig();
@@ -34,7 +61,7 @@ public class CodeMirror
 	public CodeMirror(Element place, CodeMirrorConfig config)
 	{
 		JavaScriptObject options = config.asJSOject();
-		codeMirrorImpl = invokeCtorImpl(place, options);
+		codeMirrorImpl = invokeCtorImpl(place, options, changeFn, saveFn);
 		this.config = config;
 		initialize(options);
 	}
@@ -122,16 +149,25 @@ public class CodeMirror
 	private static CodeMirror fromTextAreaImpl(TextAreaElement tea, JavaScriptObject options)
 	{
 		CodeMirror rv = new CodeMirror();
-		rv.codeMirrorImpl = doTextAreaImpl(tea, options);
+		rv.codeMirrorImpl = doTextAreaImpl(tea, options, rv.changeFn, rv.saveFn);
 		rv.initialize(options);
 		return rv;
 	}
 
-	private static native JavaScriptObject invokeCtorImpl(Element place, JavaScriptObject options) /*-{
+	private static native JavaScriptObject invokeCtorImpl(Element place, JavaScriptObject options, IFunction fn, IFunction save) /*-{
+		options.onChange = function() {
+			fn.@com.mastergaurav.codemirror.client.IFunction::execute(Lcom/google/gwt/core/client/JsArrayMixed;)(arguments);
+		};
 		return new $wnd.CodeMirror(place, options);
 	}-*/;
 
-	private static native JavaScriptObject doTextAreaImpl(TextAreaElement tea, JavaScriptObject options) /*-{
+	private static native JavaScriptObject doTextAreaImpl(TextAreaElement tea, JavaScriptObject options, IFunction fn, IFunction save) /*-{
+		options.onChange = function() {
+			fn.@com.mastergaurav.codemirror.client.IFunction::execute(Lcom/google/gwt/core/client/JsArrayMixed;)(arguments);
+		};
+		options.saveFunction = function() {
+			save.@com.mastergaurav.codemirror.client.IFunction::execute(Lcom/google/gwt/core/client/JsArrayMixed;)(arguments);
+		};
 		return $wnd.CodeMirror.fromTextArea(tea, options);
 	}-*/;
 
@@ -179,6 +215,11 @@ public class CodeMirror
 		}
 
 		return null;
+	}
+
+	public Element getElement()
+	{
+		return wrapping;
 	}
 
 	public void search(String what)
@@ -408,4 +449,24 @@ public class CodeMirror
 			}
 		} while(confirm("End of document reach. Start over?"));
 	}-*/;
+
+	public ICallback getChangeCallback()
+	{
+		return changeCallback;
+	}
+
+	public void setChangeCallback(ICallback callback)
+	{
+		this.changeCallback = callback;
+	}
+
+	public ICallback getSaveCallback()
+	{
+		return saveCallback;
+	}
+
+	public void setSaveCallback(ICallback saveCallback)
+	{
+		this.saveCallback = saveCallback;
+	}
 }

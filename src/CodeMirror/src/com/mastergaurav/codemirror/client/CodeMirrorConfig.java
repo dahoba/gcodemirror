@@ -207,4 +207,33 @@ public class CodeMirrorConfig implements CodeMirrorOptions
 	{
 		return JSOUtils.fromMap(options);
 	}
+
+	/**
+	 * Gets a default {@link CodeMirrorConfig}.
+	 * 
+	 * <p>
+	 * <b>Note:</b>: The default configuration is for java.
+	 * </p>
+	 * 
+	 * @return The default configuration
+	 */
+	public static CodeMirrorConfig getDefault()
+	{
+		return forJava();
+	}
+
+	public static CodeMirrorConfig forJava()
+	{
+		CodeMirrorConfig config = new CodeMirrorConfig();
+		config.setParserFile("contrib/java/js/tokenizejava.js", "contrib/java/js/parsejava.js");
+		config.setHeight(480, Unit.PX);
+		config.setWidth(640, Unit.PX);
+		config.setStylesheet(GWT.getModuleBaseURL() + "cm/contrib/java/css/javacolors.css");
+		config.setTabmode(TabMode.SHIFT);
+		config.setShowLineNumbers(true);
+
+		return config;
+	}
 }
+
+
